@@ -1,24 +1,25 @@
 FROM php:8.1-apache
 
-# Enable Apache rewrite module for Yii2 URLs
+# Enable Apache rewrite module
 RUN a2enmod rewrite
 
-# Install required PHP extensions
+# Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Clean default web directory
+# Remove default files
 RUN rm -rf /var/www/html/*
 
-# Copy Yii2 app into Apache web root
+# Copy Yii2 app
 COPY . /var/www/html/
 
-# Set correct ownership and permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Allow .htaccess overrides by updating Apache config
-RUN sed -i 's|<Directory /var/www/>|<Directory /var/www/html/>|' /etc/apache2/apache2.conf \
-    && sed -i '/<Directory \/var\/www\/html\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+# Change Apache DocumentRoot to /var/www/html/web
+RUN sed -ri 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/web!' /etc/apache2/sites-available/000-default.conf
 
-# Expose port 80 for Apache
+# Allow .htaccess overrides for /var/www/html/web
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
 EXPOSE 80
