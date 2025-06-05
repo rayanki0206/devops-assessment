@@ -24,8 +24,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker service update --image ${{ secrets.DOCKER_USERNAME }}/yii2-app:latest yii2_yii2 || \
             docker service create --name yii2_yii2 --publish 8080:80 ${{ secrets.DOCKER_USERNAME }}/yii2-app:latest
