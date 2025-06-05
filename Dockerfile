@@ -4,7 +4,7 @@ FROM php:8.1-apache
 RUN a2enmod rewrite
 
 # Copy your simple index.php to the web root
-COPY index.php /var/www/html/index.php
+COPY web/index.php /var/www/html/index.php
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
