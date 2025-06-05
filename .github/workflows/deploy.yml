@@ -12,6 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Ansible
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: install.yml
+          inventory: inventory.ini
+          key: ${{ secrets.EC2_SSH_KEY }}
+          user: ubuntu
+          host: ${{ secrets.EC2_HOST }}
+
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
