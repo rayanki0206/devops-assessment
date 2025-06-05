@@ -1,6 +1,6 @@
 FROM php:8.1-apache
 
-# Enable Apache rewrite module (optional, can remove if you want)
+# Enable Apache rewrite module
 RUN a2enmod rewrite
 
 # Copy your simple index.php to the web root
